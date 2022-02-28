@@ -1,0 +1,28 @@
+package com.refreshtokenjwt.app.modal;
+
+import lombok.*;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Table(name = "Users")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class User extends IdBasedEntity implements Serializable {
+
+    private String username;
+    private String surname;
+    private String email;
+    private String password;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(	name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
+
+}
