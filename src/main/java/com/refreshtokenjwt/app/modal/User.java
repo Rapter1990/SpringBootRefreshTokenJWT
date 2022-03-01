@@ -15,12 +15,11 @@ import java.util.Set;
 public class User extends IdBasedEntity implements Serializable {
 
     private String username;
-    private String surname;
     private String email;
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(	name = "user_roles",
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
