@@ -92,6 +92,12 @@
             <artifactId>gson</artifactId>
         </dependency>
 
+        <!-- it's used for test only-->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
