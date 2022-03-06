@@ -17,23 +17,28 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.junit.jupiter.api.Order;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.concurrent.atomic.AtomicReference;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@DirtiesContext
+@ActiveProfiles("test")
 public class UserMockTests {
 
-    MockMvc mockMvc;
+    private final MockMvc mockMvc;
 
-    AtomicReference<String> token = new AtomicReference<String>();
-    AtomicReference<String> refreshToken = new AtomicReference<String>();
-    AtomicReference<String> accessToken = new AtomicReference<String>();
+    private static String token;
+    private static String refreshToken;
+    // it seems accessToken and token is the same, so use a one of the names
+    private static String accessToken;
 
     @Autowired
     public UserMockTests(MockMvc mockMvc) {
@@ -58,13 +63,13 @@ public class UserMockTests {
         signupRequest.setPassword("user7");
 
 
-        mockMvc.perform( MockMvcRequestBuilders
-                .post("/api/auth/signup")
-                .content(asJsonString(signupRequest))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/api/auth/signup")
+                        .content(asJsonString(signupRequest))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").exists());
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("User registered successfully!"));
     }
 
     @Test
@@ -76,11 +81,11 @@ public class UserMockTests {
         loginRequest.setPassword("user7");
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
-                .post("/api/auth/signin")
-                .header("Authorization", "Bearer " + token)
-                .content(asJsonString(loginRequest))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                        .post("/api/auth/signin")
+                        .content(asJsonString(loginRequest))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
 
@@ -88,28 +93,28 @@ public class UserMockTests {
         JWTResponse jwtResponse = new Gson().fromJson(responseBody, JWTResponse.class);
 
 
-        token.set(jwtResponse.getToken());
-        refreshToken.set(jwtResponse.getRefreshToken());
+        token = jwtResponse.getToken();
+        refreshToken = jwtResponse.getRefreshToken();
 
     }
 
     @Test
     @Order(3)
-    public void refreshTokenReturnStatus200() throws Exception{
+    public void refreshTokenReturnStatus200() throws Exception {
 
         Thread.sleep(1000 * 60);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/refreshtoken")
-                .content(asJsonString(new TokenRefreshRequest(refreshToken.get())))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                        .content(asJsonString(new TokenRefreshRequest(refreshToken)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
 
         String responseBody = mvcResult.getResponse().getContentAsString();
         TokenRefreshResponse tokenRefreshResponse = new Gson().fromJson(responseBody, TokenRefreshResponse.class);
 
-        accessToken.set(tokenRefreshResponse.getAccessToken());
+        token = tokenRefreshResponse.getAccessToken();
     }
 
     @Test
@@ -117,8 +122,9 @@ public class UserMockTests {
     public void openUserPage() throws Exception {
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/pages/user")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + token)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
 
@@ -129,11 +135,13 @@ public class UserMockTests {
     @Test
     @Order(5)
     public void logoutUserReturnStatus200() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/logout")
-                .content(asJsonString(new LogoutRequest(6)))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/logout")
+                        .content(asJsonString(new LogoutRequest(6)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
+                // I don't know why you should provide this message, check AuthController line 189
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Log out successful!"))
                 .andReturn();
     }

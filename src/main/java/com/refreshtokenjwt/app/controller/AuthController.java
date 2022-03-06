@@ -186,6 +186,9 @@ public class AuthController {
 
         int deletedValue = refreshTokenService.deleteByUserId(userId);
 
+        // I think there is no need to check
+        // Also, logging out does not mean to delete user
+        // you should just invalidate user tokens or deleting tokens from database
         if(deletedValue == 1){
             return ResponseEntity.ok(new MessageResponse("Log out successful!"));
         }else{
