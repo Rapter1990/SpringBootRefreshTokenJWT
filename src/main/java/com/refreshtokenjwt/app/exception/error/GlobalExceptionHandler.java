@@ -126,7 +126,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     // handleCategoryNotFoundException : triggers when there is not resource with the specified ID in RefreshToken
     @ExceptionHandler(RefreshTokenException.class)
-    public ResponseEntity<Object> handleRefreshTokenException(UserNotFoundException ex) {
+    public ResponseEntity<Object> handleRefreshTokenException(RefreshTokenException ex) {
 
         List<String> details = new ArrayList<String>();
         details.add(ex.getMessage());
