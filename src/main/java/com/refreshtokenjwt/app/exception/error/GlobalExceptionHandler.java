@@ -1,6 +1,7 @@
 package com.refreshtokenjwt.app.exception.error;
 
 import com.refreshtokenjwt.app.exception.RefreshTokenException;
+import com.refreshtokenjwt.app.exception.RoleException;
 import com.refreshtokenjwt.app.exception.UserNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -111,14 +112,27 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     // handleCategoryNotFoundException : triggers when there is not resource with the specified ID in RefreshToken
-    @ExceptionHandler(RefreshTokenException.class)
-    public ResponseEntity<Object> RefreshTokenException(UserNotFoundException ex) {
+    @ExceptionHandler(RoleException.class)
+    public ResponseEntity<Object> handleRoleException(RoleException ex) {
 
         List<String> details = new ArrayList<String>();
         details.add(ex.getMessage());
 
         ApiError err = new ApiError(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, LocalDateTime.now() ,
-                "User Not Found", details);
+                "Role Not Found", details);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+    }
+
+    // handleCategoryNotFoundException : triggers when there is not resource with the specified ID in RefreshToken
+    @ExceptionHandler(RefreshTokenException.class)
+    public ResponseEntity<Object> handleRefreshTokenException(UserNotFoundException ex) {
+
+        List<String> details = new ArrayList<String>();
+        details.add(ex.getMessage());
+
+        ApiError err = new ApiError(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, LocalDateTime.now() ,
+                "Refresh Token Not Found", details);
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
     }
