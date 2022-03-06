@@ -31,9 +31,7 @@ public class UserMockTests {
 
     MockMvc mockMvc;
 
-    AtomicReference<String> token = new AtomicReference<String>();
-    AtomicReference<String> refreshToken = new AtomicReference<String>();
-    AtomicReference<String> accessToken = new AtomicReference<String>();
+    static AtomicReference<JWTResponse> jwtToken = new AtomicReference<JWTResponse>();
 
     @Autowired
     public UserMockTests(MockMvc mockMvc) {
@@ -63,8 +61,7 @@ public class UserMockTests {
                 .content(asJsonString(signupRequest))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").exists());
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
@@ -77,7 +74,6 @@ public class UserMockTests {
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/auth/signin")
-                .header("Authorization", "Bearer " + token)
                 .content(asJsonString(loginRequest))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
@@ -88,8 +84,7 @@ public class UserMockTests {
         JWTResponse jwtResponse = new Gson().fromJson(responseBody, JWTResponse.class);
 
 
-        token.set(jwtResponse.getToken());
-        refreshToken.set(jwtResponse.getRefreshToken());
+        UserMockTests.jwtToken.set(jwtResponse);
 
     }
 
@@ -97,10 +92,10 @@ public class UserMockTests {
     @Order(3)
     public void refreshTokenReturnStatus200() throws Exception{
 
-        Thread.sleep(1000 * 60);
+        Thread.sleep(1000 * 10);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/refreshtoken")
-                .content(asJsonString(new TokenRefreshRequest(refreshToken.get())))
+                .content(asJsonString(new TokenRefreshRequest(UserMockTests.jwtToken.get().getRefreshToken())))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -109,7 +104,7 @@ public class UserMockTests {
         String responseBody = mvcResult.getResponse().getContentAsString();
         TokenRefreshResponse tokenRefreshResponse = new Gson().fromJson(responseBody, TokenRefreshResponse.class);
 
-        accessToken.set(tokenRefreshResponse.getAccessToken());
+        UserMockTests.jwtToken.get().setToken(tokenRefreshResponse.getAccessToken());
     }
 
     @Test
@@ -117,6 +112,7 @@ public class UserMockTests {
     public void openUserPage() throws Exception {
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/pages/user")
+                .header("Authorization", "Bearer " + UserMockTests.jwtToken.get().getToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -129,8 +125,9 @@ public class UserMockTests {
     @Test
     @Order(5)
     public void logoutUserReturnStatus200() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/logout")
-                .content(asJsonString(new LogoutRequest(6)))
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/logout")
+                .header("Authorization", "Bearer " + UserMockTests.jwtToken.get().getToken())
+                .content(asJsonString(new LogoutRequest(UserMockTests.jwtToken.get().getToken())))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
