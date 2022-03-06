@@ -37,7 +37,7 @@ public class UserService implements IUserService {
 
     @Override
     public Boolean existsByEmail(String email) {
-        return userRepository.existsByUsername(email);
+        return userRepository.existsByEmail(email);
     }
 
     @Override

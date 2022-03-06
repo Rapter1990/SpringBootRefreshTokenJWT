@@ -9,5 +9,5 @@ public interface IRefreshTokenService {
     public Optional<RefreshToken> findByToken(String token);
     public RefreshToken createRefreshToken(int userId);
     public RefreshToken verifyExpiration(RefreshToken token);
-    public int deleteByUserId(int userId);
+    public int deleteByToken(String token);
 }

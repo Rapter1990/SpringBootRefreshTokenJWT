@@ -182,9 +182,9 @@ public class AuthController {
 
         LOGGER.info("AuthController | logoutUser is started");
 
-        int userId = logoutRequest.getUserId();
+        String token = logoutRequest.getToken();
 
-        int deletedValue = refreshTokenService.deleteByUserId(userId);
+        int deletedValue = refreshTokenService.deleteByToken(token);
 
         if(deletedValue == 1){
             return ResponseEntity.ok(new MessageResponse("Log out successful!"));
