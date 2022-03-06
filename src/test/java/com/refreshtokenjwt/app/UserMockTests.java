@@ -127,7 +127,6 @@ public class UserMockTests {
     public void logoutUserReturnStatus200() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/logout")
                 .header("Authorization", "Bearer " + UserMockTests.jwtToken.get().getToken())
-                .content(asJsonString(new LogoutRequest(UserMockTests.jwtToken.get().getToken())))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())

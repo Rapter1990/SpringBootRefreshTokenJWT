@@ -58,12 +58,9 @@ public class RefreshTokenService implements IRefreshTokenService {
     }
 
     @Override
-    public int deleteByToken(String token) {
+    public int deleteByUserId(int userId) {
 
-        RefreshToken accessToken = refreshTokenRepository.findByToken(token)
-                .orElseThrow(() -> new RefreshTokenException(token + "Refresh token is not in database!"));
-
-        User user = userService.findById(accessToken.getId());
+        User user = userService.findById(userId);
         return refreshTokenRepository.deleteByUser(user);
     }
 }

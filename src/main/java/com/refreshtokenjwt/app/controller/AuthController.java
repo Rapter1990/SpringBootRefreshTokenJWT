@@ -1,5 +1,6 @@
 package com.refreshtokenjwt.app.controller;
 
+import com.refreshtokenjwt.app.annotation.CurrentUser;
 import com.refreshtokenjwt.app.exception.RefreshTokenException;
 import com.refreshtokenjwt.app.exception.RoleException;
 import com.refreshtokenjwt.app.jwt.JwtUtils;
@@ -178,13 +179,13 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logoutUser(@RequestBody LogoutRequest logoutRequest) {
+    public ResponseEntity<?> logoutUser(@CurrentUser CustomUserDetails user) {
 
         LOGGER.info("AuthController | logoutUser is started");
 
-        String token = logoutRequest.getToken();
+        int userId = user.getId();
 
-        int deletedValue = refreshTokenService.deleteByToken(token);
+        int deletedValue = refreshTokenService.deleteByUserId(userId);
 
         if(deletedValue == 1){
             return ResponseEntity.ok(new MessageResponse("Log out successful!"));
