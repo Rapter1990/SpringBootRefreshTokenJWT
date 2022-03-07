@@ -74,7 +74,7 @@ public class AuthController {
         String username = signUpRequest.getUsername();
         String email = signUpRequest.getEmail();
         String password = signUpRequest.getPassword();
-        Set<String> strRoles = signUpRequest.getRole();
+        Set<String> strRoles = signUpRequest.getRoles();
         Set<Role> roles = new HashSet<>();
 
         if(userService.existsByUsername(username)){
