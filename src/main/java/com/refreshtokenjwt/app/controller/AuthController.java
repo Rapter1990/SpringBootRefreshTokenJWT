@@ -1,6 +1,5 @@
 package com.refreshtokenjwt.app.controller;
 
-import com.refreshtokenjwt.app.annotation.CurrentUser;
 import com.refreshtokenjwt.app.exception.RefreshTokenException;
 import com.refreshtokenjwt.app.exception.RoleException;
 import com.refreshtokenjwt.app.jwt.JwtUtils;
@@ -9,7 +8,6 @@ import com.refreshtokenjwt.app.modal.RefreshToken;
 import com.refreshtokenjwt.app.modal.Role;
 import com.refreshtokenjwt.app.modal.User;
 import com.refreshtokenjwt.app.payload.request.LoginRequest;
-import com.refreshtokenjwt.app.payload.request.LogoutRequest;
 import com.refreshtokenjwt.app.payload.request.SignupRequest;
 import com.refreshtokenjwt.app.payload.request.TokenRefreshRequest;
 import com.refreshtokenjwt.app.payload.response.JWTResponse;
@@ -33,9 +31,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -179,11 +177,16 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logoutUser(@CurrentUser CustomUserDetails user) {
+    public ResponseEntity<?> logoutUser(Principal principalUser) {
 
         LOGGER.info("AuthController | logoutUser is started");
 
+        Object principal = ((UsernamePasswordAuthenticationToken) principalUser).getPrincipal();
+        CustomUserDetails user = (CustomUserDetails) principal;
+
         int userId = user.getId();
+
+        LOGGER.info("AuthController | logoutUser | userId : " + userId);
 
         int deletedValue = refreshTokenService.deleteByUserId(userId);
 

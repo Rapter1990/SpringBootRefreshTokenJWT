@@ -51,9 +51,9 @@ public class UserMockTests {
     public void registerUserReturnStatus200() throws Exception {
 
         SignupRequest signupRequest = new SignupRequest();
-        signupRequest.setUsername("User7");
-        signupRequest.setEmail("user7_userrole@user.com");
-        signupRequest.setPassword("user7");
+        signupRequest.setUsername("User2");
+        signupRequest.setEmail("user2_userrole@user.com");
+        signupRequest.setPassword("user2");
 
 
         mockMvc.perform( MockMvcRequestBuilders
@@ -69,8 +69,8 @@ public class UserMockTests {
     public void loginUserReturnStatus200() throws Exception {
 
         LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setUsername("User7");
-        loginRequest.setPassword("user7");
+        loginRequest.setUsername("User2");
+        loginRequest.setPassword("user2");
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/auth/signin")
