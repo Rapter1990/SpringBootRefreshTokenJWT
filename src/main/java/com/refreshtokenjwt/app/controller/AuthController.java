@@ -17,6 +17,8 @@ import com.refreshtokenjwt.app.security.CustomUserDetails;
 import com.refreshtokenjwt.app.service.impl.RefreshTokenService;
 import com.refreshtokenjwt.app.service.impl.RoleService;
 import com.refreshtokenjwt.app.service.impl.UserService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.security.Principal;
 import java.util.HashSet;
@@ -198,7 +201,7 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logoutUser(Principal principalUser) {
+    public ResponseEntity<?> logoutUser(@ApiIgnore Principal principalUser) {
 
         LOGGER.info("AuthController | logoutUser is started");
 
