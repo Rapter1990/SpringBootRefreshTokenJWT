@@ -11,7 +11,6 @@ import java.util.Set;
 @Table(name = "Users")
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class User extends IdBasedEntity implements Serializable {
 
     private String username;
