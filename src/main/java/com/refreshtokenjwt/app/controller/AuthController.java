@@ -96,23 +96,44 @@ public class AuthController {
                 switch (role) {
                     case "ROLE_ADMIN":
 
-                        Role adminRole = roleService.findByName(ERole.ROLE_ADMIN)
-                                .orElseThrow(() -> new RoleException("Error: Admin Role is not found."));
+                        Role adminRole = null;
+
+                        if(roleService.findByName(ERole.ROLE_ADMIN).isEmpty()){
+                            adminRole = new Role(ERole.ROLE_ADMIN);
+                        }else{
+                            adminRole = roleService.findByName(ERole.ROLE_ADMIN)
+                                        .orElseThrow(() -> new RoleException("Error: Admin Role is not found."));
+                        }
+
                         roles.add(adminRole);
                         break;
 
                     case "ROLE_MODERATOR":
 
-                        Role moderatorRole = roleService.findByName(ERole.ROLE_MODERATOR)
-                                .orElseThrow(() -> new RoleException("Error: Moderator Role is not found."));
+                        Role moderatorRole = null;
+
+                        if(roleService.findByName(ERole.ROLE_MODERATOR).isEmpty()){
+                            moderatorRole = new Role(ERole.ROLE_MODERATOR);
+                        }else{
+                            moderatorRole = roleService.findByName(ERole.ROLE_MODERATOR)
+                                    .orElseThrow(() -> new RoleException("Error: Moderator Role is not found."));
+                        }
+
                         roles.add(moderatorRole);
 
                         break;
 
                     default:
 
-                        Role userRole = roleService.findByName(ERole.ROLE_USER)
-                                .orElseThrow(() -> new RoleException("Error: User Role is not found."));
+                        Role userRole = null;
+
+                        if(roleService.findByName(ERole.ROLE_USER).isEmpty()){
+                            userRole = new Role(ERole.ROLE_USER);
+                        }else{
+                            userRole = roleService.findByName(ERole.ROLE_USER)
+                                    .orElseThrow(() -> new RoleException("Error: User Role is not found."));
+                        }
+
                         roles.add(userRole);
 
                 }
