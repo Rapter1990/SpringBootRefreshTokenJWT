@@ -10,6 +10,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     // handleHttpMediaTypeNotSupported : triggers when the JSON is invalid
@@ -111,7 +113,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
     }
 
-    // handleCategoryNotFoundException : triggers when there is not resource with the specified ID in RefreshToken
+    // handleRoleException : triggers when there is not resource with the specified ID in RefreshToken
     @ExceptionHandler(RoleException.class)
     public ResponseEntity<Object> handleRoleException(RoleException ex) {
 
@@ -124,7 +126,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
     }
 
-    // handleCategoryNotFoundException : triggers when there is not resource with the specified ID in RefreshToken
+    // handleRefreshTokenException : triggers when there is not resource with the specified ID in RefreshToken
     @ExceptionHandler(RefreshTokenException.class)
     public ResponseEntity<Object> handleRefreshTokenException(RefreshTokenException ex) {
 

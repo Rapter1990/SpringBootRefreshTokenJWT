@@ -17,7 +17,7 @@ public class ApiError implements Serializable {
 
     private HttpStatus status;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime timestamp;
 
     private String message;
@@ -25,4 +25,3 @@ public class ApiError implements Serializable {
     List<String> errorDetails;
 
 }
-
