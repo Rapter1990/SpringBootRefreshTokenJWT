@@ -174,15 +174,12 @@ public class AuthController {
             });
         }else{
 
-            Role userRole = new Role();
-            userRole.setName(ERole.ROLE_USER);
-
-            roles.add(userRole);
+            roleService.findByName(ERole.ROLE_USER).ifPresentOrElse(roles::add, () -> roles.add(new Role(ERole.ROLE_USER)));
         }
 
-        roleService.saveRoles(roles);
         user.setRoles(roles);
         userService.saveUser(user);
+
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
