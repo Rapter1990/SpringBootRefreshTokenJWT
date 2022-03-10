@@ -180,6 +180,7 @@ public class AuthController {
             roles.add(userRole);
         }
 
+        roleService.saveRoles(roles);
         user.setRoles(roles);
         userService.saveUser(user);
 

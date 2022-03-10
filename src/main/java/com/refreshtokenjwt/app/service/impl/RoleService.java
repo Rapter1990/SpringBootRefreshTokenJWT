@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -28,5 +29,9 @@ public class RoleService implements IRoleService {
 
     public void saveRole(Role role){
         roleRepository.save(role);
+    }
+
+    public void saveRoles(Set<Role> roles){
+        roleRepository.saveAll(roles);
     }
 }
