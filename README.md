@@ -1,6 +1,6 @@
 # Spring Boot Refresh Token with JWT
 
-<img src="" alt="Main Information" width="800" height="300">
+<img src="screenshots/spring_boot_refreshtoken_with_jwt.png" alt="Main Information" width="800" height="300">
 
 ### 📖 Information
 
@@ -19,12 +19,12 @@
 
 ### 🔨 Run the App
 
-<b>1.</b> Download your project from this link `https://github.com/Rapter1990/SpringBootRefreshTokenJWT`
-<b>2.</b> Go to the project's home directory :  `cd SpringBootRefreshTokenJWT`
-<b>3.</b> Create a jar file though this command `mvn clean install`
-<b>4.</b> Run the project though this command `mvn spring-boot:run`
+<b>1 )</b> Download your project from this link `https://github.com/Rapter1990/SpringBootRefreshTokenJWT`
+<b>2 )</b> Go to the project's home directory :  `cd SpringBootRefreshTokenJWT`
+<b>3 )</b> Create a jar file though this command `mvn clean install`
+<b>4 )</b> Run the project though this command `mvn spring-boot:run`
 
-<b>5.</b> Explore Rest APIs
+<b>5 )</b> Explore Rest APIs
 <table style="width:100%">
   <tr>
     <th>Method</th>
@@ -104,6 +104,7 @@
 
 ## Swagger
 > **Access : http://localhost:1221/swagger-ui.html**
+
 > **Access : http://localhost:1221/swagger-ui.html**
 
 ## Valid Request Body
