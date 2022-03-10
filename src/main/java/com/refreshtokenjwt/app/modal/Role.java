@@ -1,15 +1,16 @@
 package com.refreshtokenjwt.app.modal;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Roles")
-@Data
 @NoArgsConstructor
+@Getter
+@Setter
 public class Role extends IdBasedEntity implements Serializable {
 
     @Enumerated(EnumType.STRING)

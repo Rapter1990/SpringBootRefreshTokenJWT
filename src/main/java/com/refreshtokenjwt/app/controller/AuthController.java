@@ -8,6 +8,7 @@ import com.refreshtokenjwt.app.modal.RefreshToken;
 import com.refreshtokenjwt.app.modal.Role;
 import com.refreshtokenjwt.app.modal.User;
 import com.refreshtokenjwt.app.payload.request.LoginRequest;
+import com.refreshtokenjwt.app.payload.request.RoleRequest;
 import com.refreshtokenjwt.app.payload.request.SignupRequest;
 import com.refreshtokenjwt.app.payload.request.TokenRefreshRequest;
 import com.refreshtokenjwt.app.payload.response.JWTResponse;
@@ -69,6 +70,34 @@ public class AuthController {
         this.jwtUtils = jwtUtils;
     }
 
+    @PostMapping("/addrole")
+    public ResponseEntity<?> addRole(@RequestBody RoleRequest roleRequest) {
+
+        String roleName = roleRequest.getRoleName();
+        Role role = null;
+
+        switch (roleName) {
+            case "ROLE_ADMIN":
+
+                role = new Role(ERole.ROLE_ADMIN);
+
+                break;
+
+            case "ROLE_MODERATOR":
+
+                role = new Role(ERole.ROLE_MODERATOR);
+                break;
+
+            default:
+
+                role = new Role(ERole.ROLE_USER);;
+        }
+
+        roleService.saveRole(role);
+
+        return ResponseEntity.badRequest().body(new MessageResponse("Role: " + roleName + "saved "));
+    }
+
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignupRequest signUpRequest) {
 
@@ -96,6 +125,7 @@ public class AuthController {
 
         if (strRoles != null) {
             strRoles.forEach(role -> {
+                LOGGER.info("AuthController | registerUser | role : " + role);
                 switch (role) {
                     case "ROLE_ADMIN":
 

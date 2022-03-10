@@ -1,6 +1,6 @@
 # Spring Boot Refresh Token with JWT
 
-<img src="screenshots/spring_boot_refreshtoken_with_jwt.png" alt="Main Information" width="800" height="300">
+<img src="screenshots/spring_boot_refreshtoken_with_jwt.png" alt="Main Information" width="800" height="500">
 
 ### 📖 Information
 
@@ -20,8 +20,11 @@
 ### 🔨 Run the App
 
 <b>1 )</b> Download your project from this link `https://github.com/Rapter1990/SpringBootRefreshTokenJWT`
+
 <b>2 )</b> Go to the project's home directory :  `cd SpringBootRefreshTokenJWT`
+
 <b>3 )</b> Create a jar file though this command `mvn clean install`
+
 <b>4 )</b> Run the project though this command `mvn spring-boot:run`
 
 <b>5 )</b> Explore Rest APIs
@@ -148,20 +151,20 @@
    }
 ```
 
-## Valid Request Params
+##### <a id="refreshtoken">Refresh Token -> http://localhost:1221/api/auth/refreshtoken</a>
+```
+   {
+       "refreshToken" : "a93444ea-5c0f-4130-8f80-0cce82d53155"
+   }
+```
+
+## Valid Header
 
 ##### <a id="logout">Logout -> http://localhost:1221/api/auth/logout</a>
 ```
    http://localhost:1221/api/auth/logout
 
    Authorization : Bearer {accessToken}
-```
-
-##### <a id="refreshtoken">Refresh Token -> http://localhost:1221/api/auth/refreshtoken</a>
-```
-   {
-       "refreshToken" : "a93444ea-5c0f-4130-8f80-0cce82d53155"
-   }
 ```
 
 ##### <a id="pagesall">Show Public Content -> http://localhost:1221/api/pages/all</a>
