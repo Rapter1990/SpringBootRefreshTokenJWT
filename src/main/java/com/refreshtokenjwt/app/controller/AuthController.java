@@ -177,6 +177,7 @@ public class AuthController {
             roleService.findByName(ERole.ROLE_USER).ifPresentOrElse(roles::add, () -> roles.add(new Role(ERole.ROLE_USER)));
         }
 
+        roleService.saveRoles(roles);
         user.setRoles(roles);
         userService.saveUser(user);
 
