@@ -108,8 +108,6 @@
 ## Swagger
 > **Access : http://localhost:1221/swagger-ui.html**
 
-> **Access : http://localhost:1221/swagger-ui.html**
-
 ## Valid Request Body
 
 ##### <a id="signup">Sign Up -> http://localhost:1221/api/auth/signup</a>
@@ -199,5 +197,29 @@
 <details>
 <summary>Click here to show the screenshots of project</summary>
     <p> Figure 1 </p>
-    <img src ="screenshots/screenshot_1.PNG">
+    <img src ="screenshots/1.PNG">
+    <p> Figure 2 </p>
+    <img src ="screenshots/2.PNG">
+    <p> Figure 3 </p>
+    <img src ="screenshots/3.PNG">
+    <p> Figure 4 </p>
+    <img src ="screenshots/4.PNG">
+    <p> Figure 5 </p>
+    <img src ="screenshots/5.PNG">
+    <p> Figure 6 </p>
+    <img src ="screenshots/6.PNG">
+    <p> Figure 7 </p>
+    <img src ="screenshots/7.PNG">
+    <p> Figure 8 </p>
+    <img src ="screenshots/8.PNG">
+    <p> Figure 9 </p>
+    <img src ="screenshots/9.PNG">
+    <p> Figure 10 </p>
+    <img src ="screenshots/10.PNG">
+    <p> Figure 11 </p>
+    <img src ="screenshots/11.PNG">
+    <p> Figure 12 </p>
+    <img src ="screenshots/12.PNG">
+    <p> Figure 13 </p>
+    <img src ="screenshots/13.PNG">
 </details>
